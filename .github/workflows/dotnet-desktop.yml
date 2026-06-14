@@ -1,0 +1,55 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            runtime: linux-x64
+          - os: windows-latest
+            runtime: win-x64
+          - os: macos-latest
+            runtime: osx-arm64
+          - os: macos-15-intel
+            runtime: osx-x64
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish
+        run: dotnet publish -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishAot=true -p:DebugType=None -p:PublishTrimmed=true -p:DebugSymbols=false -o publish
+
+      - name: Publish
+        run: >
+          dotnet publish
+          -c Release
+          -r ${{ matrix.runtime }}
+          --self-contained true
+          -p:PublishAot=true
+          -p:PublishTrimmed=true
+          -p:DebugType=None
+          -p:DebugSymbols=false
+          -p:StripSymbols=true
+          -p:InvariantGlobalization=true
+          -p:OptimizationPreference=Speed
+          -p:UseSizeOptimizedLinq=true
+          -o publish
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: Repeater-${{ matrix.runtime }}
+          path: publish/
