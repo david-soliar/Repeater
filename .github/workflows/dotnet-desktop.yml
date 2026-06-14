@@ -1,5 +1,6 @@
 name: .NET Core Desktop
 
+
 on:
   push:
     branches: ["master"]
@@ -9,8 +10,6 @@ on:
     branches: ["master"]
     paths-ignore: ["**.md", "LICENSE"]
 
-permissions:
-  contents: write
 
 jobs:
 
@@ -23,27 +22,22 @@ jobs:
         include:
           - os: ubuntu-latest
             runtime: linux-x64
+
           - os: windows-latest
             runtime: win-x64
+
           - os: macos-latest
             runtime: osx-arm64
+
           - os: macos-15-intel
             runtime: osx-x64
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-
-      - name: Generate version
-        id: ver
-        shell: bash
-        run: echo "version=1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
-
-      - name: Publish
-        run: dotnet publish -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishAot=true -p:DebugType=None -p:PublishTrimmed=true -p:DebugSymbols=false -o publish
 
       - name: Publish
         run: >
@@ -59,20 +53,15 @@ jobs:
           -p:InvariantGlobalization=true
           -p:OptimizationPreference=Speed
           -p:UseSizeOptimizedLinq=true
-          -o publish/out
+          -o publish
 
-      - name: Rename output
+      - name: Package
         shell: bash
         run: |
           mkdir -p dist
+          zip -j dist/Repeater-${{ matrix.runtime }}.zip publish/Repeater*
 
-          if [[ "${{ matrix.runtime }}" == win-* ]]; then
-            mv publish/out/Repeater.exe dist/Repeater-${{ matrix.runtime }}.exe
-          else
-            mv publish/out/Repeater dist/Repeater-${{ matrix.runtime }}
-          fi
-
-      - name: Upload artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Repeater-${{ matrix.runtime }}
@@ -82,11 +71,11 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Download all artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: dist
@@ -100,4 +89,4 @@ jobs:
         with:
           tag_name: v${{ steps.ver.outputs.version }}
           name: Repeater v${{ steps.ver.outputs.version }}
-          files: dist/**/*
+          files: dist/**/*.zip
