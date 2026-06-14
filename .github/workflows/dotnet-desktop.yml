@@ -12,6 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: true
       matrix:
         include:
           - os: ubuntu-latest
@@ -25,9 +26,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+
+      - name: Generate version
+        id: ver
+        shell: bash
+        run: echo "version=1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
 
       - name: Publish
         run: dotnet publish -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishAot=true -p:DebugType=None -p:PublishTrimmed=true -p:DebugSymbols=false -o publish
@@ -48,8 +55,42 @@ jobs:
           -p:UseSizeOptimizedLinq=true
           -o publish
 
-      - name: Upload
+      - name: Rename output
+        shell: bash
+        run: |
+          mkdir dist
+          if [[ "${{ matrix.runtime }}" == win-* ]]; then
+            mv publish/* dist/Repeater-${{ matrix.runtime }}.exe
+          else
+            mv publish/* dist/Repeater-${{ matrix.runtime }}
+          fi
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: Repeater-${{ matrix.runtime }}
-          path: publish/
+          path: dist/
+
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Generate version
+        id: ver
+        run: echo "version=1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.version }}
+          name: Repeater v${{ steps.ver.outputs.version }}
+          files: dist/**/*
