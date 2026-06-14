@@ -7,6 +7,8 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<EnableLibraryImportGenerator>true</EnableLibraryImportGenerator>
   </PropertyGroup>
 
 </Project>
