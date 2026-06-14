@@ -53,16 +53,17 @@ jobs:
           -p:InvariantGlobalization=true
           -p:OptimizationPreference=Speed
           -p:UseSizeOptimizedLinq=true
-          -o publish
+          -o publish/out
 
       - name: Rename output
         shell: bash
         run: |
-          mkdir dist
+          mkdir -p dist
+
           if [[ "${{ matrix.runtime }}" == win-* ]]; then
-            mv publish/* dist/Repeater-${{ matrix.runtime }}.exe
+            mv publish/out/Repeater.exe dist/Repeater-${{ matrix.runtime }}.exe
           else
-            mv publish/* dist/Repeater-${{ matrix.runtime }}
+            mv publish/out/Repeater dist/Repeater-${{ matrix.runtime }}
           fi
 
       - name: Upload artifact
