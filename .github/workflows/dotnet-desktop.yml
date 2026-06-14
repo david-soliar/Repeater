@@ -59,7 +59,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p dist
-          7z a dist/Repeater-${{ matrix.runtime }}.zip publish/*
+          7z a dist/Repeater-${{ matrix.runtime }}.zip publish/Repeater*
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
