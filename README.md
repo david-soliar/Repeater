@@ -23,6 +23,7 @@ Press `Ctrl + C` to exit, or simply close the terminal to stop the program.
 ## Behavior
 
 The repeat rate dynamically fluctuates between the configured minimum and maximum values.
+It may occasionally dip slightly below the minimum due to CPU scheduling and system load variations.
 
 Example run used to generate the graph below:
 
