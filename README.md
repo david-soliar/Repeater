@@ -14,7 +14,7 @@ Follow the console prompts to configure:
 
 ## Platform Support
 
-Works on Windows (x64), ~~ Linux (x64), and macOS (x64 & arm64) ~~ .
+Works on Windows (x64), ~~Linux (x64), and macOS (x64 & arm64)~~ .
 
 ## Exit
 
