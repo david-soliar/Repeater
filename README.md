@@ -24,7 +24,7 @@ Press `Ctrl + C` to exit, or simply close the terminal to stop the program.
 
 The repeat rate dynamically fluctuates between the configured minimum and maximum values.
 
-![Repeater behavior](assets/behavior-time.png)
+![Repeater behavior](behavior.png)
 *Example range: 15–25 repeats*
 
 ## Performance
