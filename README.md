@@ -14,7 +14,7 @@ Follow the console prompts to configure:
 
 ## Platform Support
 
-Works on Windows (x64), Linux (x64), and macOS (x64 & arm64).
+Works on Windows (x64), ~~ Linux (x64), and macOS (x64 & arm64) ~~ .
 
 ## Exit
 
@@ -24,13 +24,24 @@ Press `Ctrl + C` to exit, or simply close the terminal to stop the program.
 
 The repeat rate dynamically fluctuates between the configured minimum and maximum values.
 
+Example run used to generate the graph below:
+
+```console
+Min repeats: 15
+Max repeats: 25
+Idle check (in milliseconds, 10-500): 20
+Press key to repeat...
+Using key: 0x01 (Mouse)
+Proceed? (y/n): y
+Press trigger key...
+Using key: 0x06 (Mouse)
+Proceed? (y/n): y
+Running...
+```
+
 ![Repeater behavior](behavior.png)
-*Example range: 15–25 repeats*
 
-## Performance
-
-- Memory usage: ~10 MB
-- CPU usage: ~1%
+*Typical resource usage during operation: ~10 MB RAM and <1% CPU.*
 
 ---
 ### Use responsibly.
