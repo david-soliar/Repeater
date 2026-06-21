@@ -2,6 +2,7 @@
 
 A lightweight cross-platform input repeater with a trigger-based activation.
 
+
 ## Usage
 
 Download the latest release from the [Releases page](https://github.com/david-soliar/Repeater/releases/latest), extract it, and run the executable.
@@ -12,13 +13,16 @@ Follow the console prompts to configure:
 - action (what gets repeated)
 - trigger
 
+
 ## Platform Support
 
 Works on Windows (x64), ~~Linux (x64), and macOS (x64 & arm64)~~ .
 
+
 ## Exit
 
 Press `Ctrl + C` to exit, or simply close the terminal to stop the program.
+
 
 ## Behavior
 
@@ -44,5 +48,12 @@ Running...
 
 *Typical resource usage during operation: ~10 MB RAM and <1% CPU.*
 
----
-### Use responsibly.
+
+## Build
+
+Requirements:
+- .NET SDK 8+
+
+```bash
+dotnet publish -c Release -r <runtime> --self-contained true -o publish
+```
