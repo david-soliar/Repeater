@@ -46,7 +46,7 @@ Running...
 
 ![Repeater behavior](behavior.png)
 
-*Typical resource usage during operation: ~10 MB RAM and <1% CPU.*
+*Typical resource usage during operation: ~10 MB RAM and ~1% CPU.*
 
 
 ## Build
